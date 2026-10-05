@@ -1,0 +1,7 @@
+# ignore from git
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
