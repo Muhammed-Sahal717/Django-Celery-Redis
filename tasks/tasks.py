@@ -15,3 +15,35 @@ def process_order(order_id):
         "order_id": order_id,
         "status": "completed",
     }
+
+
+from celery import shared_task
+
+
+@shared_task(
+    bind=True,
+    max_retries=3,
+    default_retry_delay=5,
+)
+def unstable_task(self):
+    import random
+
+    print("Attempting task...")
+
+    if random.random() < 0.7:
+        raise self.retry(exc=Exception("Temporary service failure"))
+
+    print("Task completed successfully!")
+    return "Success"
+
+
+@shared_task(
+    bind=True,
+    max_retries=3,
+    default_retry_delay=2,
+)
+def always_fails(self):
+    try:
+        raise ValueError("Something went wrong")
+    except ValueError as exc:
+        raise self.retry(exc=exc)
