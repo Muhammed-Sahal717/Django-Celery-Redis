@@ -4,11 +4,14 @@ from celery import shared_task
 
 
 @shared_task
-def slow_task():
-    print("Task started...")
+def process_order(order_id):
+    print(f"Processing order {order_id}...")
 
-    time.sleep(10)
+    time.sleep(5)
 
-    print("Task finished!")
+    print(f"Order {order_id} processed successfully!")
 
-    return "Slow task completed"
+    return {
+        "order_id": order_id,
+        "status": "completed",
+    }
