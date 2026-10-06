@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 from celery import shared_task
 
@@ -47,3 +48,12 @@ def always_fails(self):
         raise ValueError("Something went wrong")
     except ValueError as exc:
         raise self.retry(exc=exc)
+
+
+@shared_task
+def scheduled_report():
+    current_time = datetime.now().astimezone().isoformat()
+    message = f"Scheduled report executed at {current_time}"
+
+    print(message)
+    return message

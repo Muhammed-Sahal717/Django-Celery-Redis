@@ -130,3 +130,10 @@ MAILERS = {
 
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+CELERY_BEAT_SCHEDULE = {
+    "run-report-every-minute": {
+        "task": "tasks.tasks.scheduled_report",
+        "schedule": 60.0,
+    },
+}
